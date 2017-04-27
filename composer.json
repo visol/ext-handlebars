@@ -1,0 +1,26 @@
+{
+    "name": "JFB/Handlebars",
+    "description": "",
+    "type": "typo3-cms-extension",
+    "version": "1.0.0",
+    "homepage": "",
+    "license": "GPL-2.0+",
+    "preferred-install": "dist",
+    "support": {
+        "irc": "",
+        "issues": ""
+    },
+    "autoload": {
+        "psr-4": {
+            "JFB\\Handlebars\\": "Classes/"
+        }
+    },
+    "suggest": {
+    },
+    "require": {
+        "zordius/lightncandy": "^1.1",
+        "sinso/translationapi": "^1.2.0"
+    },
+    "require-dev": {
+    }
+}

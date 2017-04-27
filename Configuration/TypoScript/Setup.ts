@@ -1,0 +1,20 @@
+##
+# This configuration has to be assigned in your extension configuration:
+# 'plugin.myplugin.settings.handlebars < plugin.tx_handlebars
+##
+plugin.tx_handlebars {
+    # File extension of handlebars resources
+    fileExtension = .hbs
+
+    # Cache path for compiled templates
+    tempPath = typo3temp/Cache/Code/handlebars/
+
+    # Root path of handlebars partials (has to be overwritten in your plugin)
+    templatesRootPath = EXT:myplugin/Resources/Private/Handlebars/Templates/
+    partialsRootPath = EXT:myplugin/Resources/Private/Handlebars/Partials/
+
+    # Default variables (available in all templates)
+    variables {
+        foo = bar
+    }
+}
