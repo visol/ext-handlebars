@@ -1,6 +1,5 @@
 <?php
-
-namespace JFB\Handlebars\View;
+namespace JFB\Handlebars\DataProvider;
 
 /***************************************************************
  *  Copyright notice
@@ -28,14 +27,23 @@ namespace JFB\Handlebars\View;
  ***************************************************************/
 
 /**
- * Interface HandlebarsViewInterface
+ * Class AbstractDataProvider
  */
-interface HandlebarsViewInterface
+abstract class AbstractDataProvider implements DataProviderInterface
 {
+    /**
+     * @var array
+     */
+    protected $settings;
+
 
     /**
-     * @return array
+     * LabelDataProvider constructor.
+     *
+     * @param array $settings
      */
-    public function addVariables();
-
+    public function __construct($settings)
+    {
+        $this->settings = $settings;
+    }
 }

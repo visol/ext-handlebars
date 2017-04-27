@@ -3,9 +3,6 @@
 # 'plugin.myplugin.settings.handlebars < plugin.tx_handlebars
 ##
 plugin.tx_handlebars {
-    # File extension of handlebars resources
-    fileExtension = .hbs
-
     # Cache path for compiled templates
     tempPath = typo3temp/Cache/Code/handlebars/
 
@@ -15,6 +12,6 @@ plugin.tx_handlebars {
 
     # Default variables (available in all templates)
     variables {
-        foo = bar
+
     }
 }

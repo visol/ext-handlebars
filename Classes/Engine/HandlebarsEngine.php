@@ -26,6 +26,7 @@ namespace JFB\Handlebars\Engine;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JFB\Handlebars\DataProvider\DataProviderInterface;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,6 +35,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HandlebarsEngine
 {
+
+    /**
+     * @var array
+     */
+    protected $settings;
+
+    /**
+     * @var string
+     */
+    protected $extensionKey;
+
     /**
      * @var string
      */
@@ -47,23 +59,66 @@ class HandlebarsEngine
     /**
      * @var string
      */
+    protected $templatePath;
+
+    /**
+     * @var array
+     */
+    protected $dataProviders;
+
+    /**
+     * @var array
+     */
+    protected $additionalData;
+
+    /**
+     * @var string
+     */
     protected $tempPath;
 
     /**
      * HandlebarsEngine constructor.
      *
-     * @param $extensionKey string
-     * @param $controllerName string
-     * @param $actionName string
      * @param $settings array
      */
-    public function __construct($extensionKey, $controllerName, $actionName, $settings)
+    public function __construct($settings)
     {
-        $this->extensionKey = $extensionKey;
-        $this->controllerName = $controllerName;
-        $this->actionName = $actionName;
         $this->settings = $settings;
+        $this->extensionKey = $settings['extensionKey'];
+        $this->controllerName = $settings['controllerName'];
+        $this->actionName = $settings['actionName'];
+        $this->templatePath = $settings['templatePath'];
+        $this->dataProviders = $settings['dataProviders'];
+        $this->additionalData = $settings['additionalData'];
         $this->tempPath = PATH_site . $settings['tempPath'];
+    }
+
+    /**
+     * Runs the compiling process and returns the rendered html
+     *
+     * @return string
+     */
+    public function compile()
+    {
+        $renderer = $this->getRenderer();
+        $data = $this->getData();
+        return $renderer($data);
+    }
+
+    /**
+     *
+     */
+    public function getData()
+    {
+        $data = [];
+
+        foreach ($this->settings['dataProviders'] as $dataProviderClass) {
+            /** @var DataProviderInterface $dataProvider */
+            $dataProvider = GeneralUtility::makeInstance($dataProviderClass, $this->settings);
+            $data = array_merge_recursive($data, $dataProvider->provide());
+        }
+
+        return array_merge_recursive($data, $this->additionalData);
     }
 
     /**
@@ -77,28 +132,8 @@ class HandlebarsEngine
 
         if (!is_file($compileFileNameAndPath) || $this->isBackendUserOnline()) { // if we have a BE login always compile the template
 
-            $templateCode = $this->getTemplateCode();
-
-            // Definition of flags (Docs: https://github.com/zordius/lightncandy#compile-options)
-            $options['flags'] = LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL;
-
-            // Provisioning of custom helpers
-            $options['helpers'] = [
-                'json' => function ($context) {
-                    return json_encode($context);
-                },
-                'lookup' => function ($labels, $key) {
-                    return isset($labels[$key]) ? $labels[$key] : '';
-                }
-            ];
-
-            // Registration of a partial-resolver to provide support for partials
-            $options['partialresolver'] = function ($cx, $name) {
-                return $this->getPartialCode($cx, $name);
-            };
-
             // Compiling to PHP Code
-            $compiledCode = LightnCandy::compile($templateCode, $options);
+            $compiledCode = LightnCandy::compile($this->getTemplateCode(), $this->getOptions());
 
             // Save the compiled PHP code into a php file
             file_put_contents($compileFileNameAndPath, '<?php ' . $compiledCode . '?>');
@@ -106,6 +141,27 @@ class HandlebarsEngine
 
         // Returning the callable php file
         return include($compileFileNameAndPath);
+    }
+
+    protected function getOptions()
+    {
+        return [
+            // Definition of flags (Docs: https://github.com/zordius/lightncandy#compile-options)
+            'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+            // Provisioning of custom helpers
+            'helpers' => [
+                'json' => function ($context) {
+                    return json_encode($context);
+                },
+                'lookup' => function ($labels, $key) {
+                    return isset($labels[$key]) ? $labels[$key] : '';
+                }
+            ],
+            // Registration of a partial-resolver to provide support for partials
+            'partialresolver' => function ($cx, $name) {
+                return $this->getPartialCode($cx, $name);
+            }
+        ];
     }
 
     /**
@@ -125,7 +181,8 @@ class HandlebarsEngine
      * @param $name
      * @return string
      */
-    protected function getPartialCode ($cx, $name) {
+    protected function getPartialCode($cx, $name)
+    {
         $partialContent = '';
         $partialFileNameAndPath = $this->getPartialFileNameAndPath($name);
         if (file_exists($partialFileNameAndPath)) {
@@ -135,49 +192,51 @@ class HandlebarsEngine
     }
 
     /**
-     * Returns the filename of the cache file by naming convention:
-     * tempPath/controllerName/actionName+timestamp.php
+     * Returns the filename and path of the cache file
      *
      * @return string
      */
     protected function getCompiledFileNameAndPath()
     {
-        $path = $this->tempPath . $this->controllerName . '/';
-
         // Creates the directory if not existing
-        if (!is_dir($path)) {
-            GeneralUtility::mkdir_deep($path);
+        if (!is_dir($this->tempPath)) {
+            GeneralUtility::mkdir_deep($this->tempPath);
         }
 
         $templateFileNameAndPath = $this->getTemplateFileNameAndPath();
         $fileTimeStamp = filemtime($templateFileNameAndPath);
 
-        return $path . $this->actionName . $fileTimeStamp . '.php';
+        return $this->tempPath . basename($templateFileNameAndPath) . $fileTimeStamp . '.php';
     }
 
     /**
-     * Returns the template filename and path by naming convention:
-     * templatesRootPath/controllerName_actionName/controllerName_actionName.fileExtension
+     * Returns the template filename and path
      *
      * @return string
      */
     protected function getTemplateFileNameAndPath()
     {
-        $name = $this->controllerName . '_' . $this->actionName;
-        $path = $this->settings['handlebars']['templatesRootPath'] . $name . '/' . $name . $this->settings['handlebars']['fileExtension'];;
-        return GeneralUtility::getFileAbsFileName($path);
+        return GeneralUtility::getFileAbsFileName($this->templatePath);
     }
 
     /**
-     * Returns filename and path for a given partial name:
-     * partialsRootPath/name.fileExtension
+     * Returns filename and path for a given partial name.
+     * 1. Lookup below partialsRootPath
+     * 2. Lookup below templatesRootPath
      *
      * @param $name
      * @return string
      */
-    protected function getPartialFileNameAndPath($name) {
-        $path = $this->settings['handlebars']['partialsRootPath'] . $name . $this->settings['handlebars']['fileExtension'];
-        return GeneralUtility::getFileAbsFileName($path);
+    protected function getPartialFileNameAndPath($name)
+    {
+        $fileName = $name . '.hbs';
+        $absFileNameAndPath = GeneralUtility::getFileAbsFileName($this->settings['partialsRootPath'] . $fileName);
+
+        if (!$absFileNameAndPath) {
+            $absFileNameAndPath = GeneralUtility::getFileAbsFileName($this->settings['templatesRootPath'] . $fileName);
+        }
+
+        return $absFileNameAndPath;
     }
 
     /**
@@ -188,6 +247,7 @@ class HandlebarsEngine
     {
         return $this->getBackendUser() && (int)$this->getBackendUser()->user['uid'] > 0;
     }
+
     /**
      * Returns an instance of the current Backend User.
      *
