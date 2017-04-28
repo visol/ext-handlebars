@@ -33,6 +33,9 @@ use JFB\Handlebars\View\HandlebarsView;
 abstract class AbstractHandlebarsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
 
+    /** @var $view HandlebarsView */
+    protected $view;
+
     /**
      * The default view object to use if none of the resolved views can render
      * a response for the current request.
