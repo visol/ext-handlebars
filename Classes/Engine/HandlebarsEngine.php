@@ -151,7 +151,7 @@ class HandlebarsEngine
             // Provisioning of custom helpers
             'helpers' => [
                 'json' => function ($context) {
-                    return json_encode($context);
+                    return json_encode($context, JSON_HEX_APOS);
                 },
                 'lookup' => function ($labels, $key) {
                     return isset($labels[$key]) ? $labels[$key] : '';
