@@ -28,6 +28,7 @@ namespace JFB\Handlebars\Engine;
 
 use JFB\Handlebars\DataProvider\DataProviderInterface;
 use LightnCandy\LightnCandy;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -98,7 +99,7 @@ class HandlebarsEngine
      *
      * @return string
      */
-    public function compile()
+    public function compile(): string
     {
         $renderer = $this->getRenderer();
         $data = $this->getData();
@@ -126,7 +127,7 @@ class HandlebarsEngine
      *
      * @return callable
      */
-    public function getRenderer()
+    public function getRenderer(): callable
     {
         $compileFileNameAndPath = $this->getCompiledFileNameAndPath();
 
@@ -143,13 +144,24 @@ class HandlebarsEngine
         return include($compileFileNameAndPath);
     }
 
-    protected function getOptions()
+    /**
+     * @return array
+     */
+    protected function getOptions() : array
     {
         return [
             // Definition of flags (Docs: https://github.com/zordius/lightncandy#compile-options)
             'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
             // Provisioning of custom helpers
             'helpers' => [
+                'content' => function($context) {
+                    // TODO: Implement content and matching block helper, see https://github.com/shannonmoeller/handlebars-layouts
+                    throw new \Exception('Handlebars block/content helpers not implemented (see https://github.com/shannonmoeller/handlebars-layouts).', 1497617391);
+                },
+                'block' => function($context) {
+                    // TODO: Implement block and matching content helper, see https://github.com/shannonmoeller/handlebars-layouts
+                    return $context;
+                },
                 'json' => function ($context) {
                     return json_encode($context, JSON_HEX_APOS);
                 },
@@ -169,7 +181,7 @@ class HandlebarsEngine
      *
      * @return string
      */
-    protected function getTemplateCode()
+    protected function getTemplateCode(): string
     {
         return file_get_contents($this->getTemplateFileNameAndPath());
     }
@@ -181,7 +193,7 @@ class HandlebarsEngine
      * @param $name
      * @return string
      */
-    protected function getPartialCode($cx, $name)
+    protected function getPartialCode($cx, $name): string
     {
         $partialContent = '';
         $partialFileNameAndPath = $this->getPartialFileNameAndPath($name);
@@ -196,7 +208,7 @@ class HandlebarsEngine
      *
      * @return string
      */
-    protected function getCompiledFileNameAndPath()
+    protected function getCompiledFileNameAndPath(): string
     {
         // Creates the directory if not existing
         if (!is_dir($this->tempPath)) {
@@ -214,7 +226,7 @@ class HandlebarsEngine
      *
      * @return string
      */
-    protected function getTemplateFileNameAndPath()
+    protected function getTemplateFileNameAndPath(): string
     {
         return GeneralUtility::getFileAbsFileName($this->templatePath);
     }
@@ -227,7 +239,7 @@ class HandlebarsEngine
      * @param $name
      * @return string
      */
-    protected function getPartialFileNameAndPath($name)
+    protected function getPartialFileNameAndPath($name): string
     {
         $fileName = $name . '.hbs';
         $absFileNameAndPath = GeneralUtility::getFileAbsFileName($this->settings['partialsRootPath'] . $fileName);
@@ -243,7 +255,7 @@ class HandlebarsEngine
      * Returns backend user online status
      * @return bool
      */
-    protected function isBackendUserOnline()
+    protected function isBackendUserOnline(): bool
     {
         return $this->getBackendUser() && (int)$this->getBackendUser()->user['uid'] > 0;
     }
@@ -251,12 +263,11 @@ class HandlebarsEngine
     /**
      * Returns an instance of the current Backend User.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
-
 
 }
