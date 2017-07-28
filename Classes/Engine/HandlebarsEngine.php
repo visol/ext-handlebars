@@ -265,7 +265,7 @@ class HandlebarsEngine
      *
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser(): BackendUserAuthentication
+    protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
     }
