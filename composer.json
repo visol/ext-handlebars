@@ -2,7 +2,6 @@
     "name": "JFB/Handlebars",
     "description": "",
     "type": "typo3-cms-extension",
-    "version": "1.0.0",
     "homepage": "",
     "license": "GPL-2.0+",
     "preferred-install": "dist",
@@ -19,7 +18,7 @@
     },
     "require": {
         "zordius/lightncandy": "^1.1",
-        "sinso/translationapi": "^1.2.0"
+        "sinso/translationapi": "^2.0.0"
     },
     "require-dev": {
     }
