@@ -32,6 +32,8 @@ use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 class HandlebarsView extends AbstractView
 {
 
+    protected $template = null;
+
     /**
      * Render method of the view (entry point)
      *
@@ -39,15 +41,46 @@ class HandlebarsView extends AbstractView
      */
     public function render()
     {
-        $settings = $this->variables['settings'];
-        $settings = array_merge_recursive($settings, $this->getContextVariables());
         /** @var HandlebarsEngine $handlebarsEngine */
         $handlebarsEngine = GeneralUtility::makeInstance(
-            HandlebarsEngine::class,
-            $settings
+            HandlebarsEngine::class
         );
 
+        $handlebarsEngine->setTemplateFileNameAndPath($this->template);
+        $handlebarsEngine->setVariables($this->variables);
+
         return $handlebarsEngine->compile();
+    }
+
+    /**
+     * @return null
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param null $template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+
+    public function resetVariables()
+    {
+        $this->variables = [];
+    }
+
+    public function getVariables()
+    {
+        return $this->variables;
+    }
+
+    public function applyFormatter()
+    {
+
     }
 
     /**

@@ -45,22 +45,7 @@ class HandlebarsEngine
     /**
      * @var string
      */
-    protected $extensionKey;
-
-    /**
-     * @var string
-     */
-    protected $controllerName;
-
-    /**
-     * @var string
-     */
-    protected $actionName;
-
-    /**
-     * @var string
-     */
-    protected $templatePath;
+    protected $templateFileNameAndPath;
 
     /**
      * @var array
@@ -70,28 +55,52 @@ class HandlebarsEngine
     /**
      * @var array
      */
-    protected $additionalData;
+    protected $variables;
 
     /**
      * @var string
      */
-    protected $tempPath;
+    protected $tempPath = PATH_site . 'typo3temp/Cache/Code/handlebars/';
 
     /**
      * HandlebarsEngine constructor.
      *
      * @param $settings array
      */
-    public function __construct($settings)
+    public function __construct()
     {
-        $this->settings = $settings;
-        $this->extensionKey = $settings['extensionKey'];
-        $this->controllerName = $settings['controllerName'];
-        $this->actionName = $settings['actionName'];
-        $this->templatePath = $settings['templatePath'];
-        $this->dataProviders = $settings['dataProviders'];
-        $this->additionalData = $settings['additionalData'];
-        $this->tempPath = PATH_site . $settings['tempPath'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataProviders(): array
+    {
+        return $this->dataProviders;
+    }
+
+    /**
+     * @param array $dataProviders
+     */
+    public function setDataProviders(array $dataProviders)
+    {
+        $this->dataProviders = $dataProviders;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariables(): array
+    {
+        return $this->variables;
+    }
+
+    /**
+     * @param array $variables
+     */
+    public function setVariables(array $variables)
+    {
+        $this->variables = $variables;
     }
 
     /**
@@ -113,13 +122,13 @@ class HandlebarsEngine
     {
         $data = [];
 
-        foreach ($this->settings['dataProviders'] as $dataProviderClass) {
+        foreach ($this->$this->dataProviders as $dataProviderClass) {
             /** @var DataProviderInterface $dataProvider */
             $dataProvider = GeneralUtility::makeInstance($dataProviderClass, $this->settings);
             $data = array_merge_recursive($data, $dataProvider->provide());
         }
 
-        return array_merge_recursive($data, $this->additionalData);
+        return array_merge_recursive($data, $this->variables);
     }
 
     /**
@@ -228,7 +237,15 @@ class HandlebarsEngine
      */
     protected function getTemplateFileNameAndPath(): string
     {
-        return GeneralUtility::getFileAbsFileName($this->templatePath);
+        return GeneralUtility::getFileAbsFileName($this->templateFileNameAndPath);
+    }
+
+    /**
+     * @param string $templateFileNameAndPath
+     */
+    public function setTemplateFileNameAndPath(string $templateFileNameAndPath)
+    {
+        $this->templateFileNameAndPath = $templateFileNameAndPath;
     }
 
     /**
