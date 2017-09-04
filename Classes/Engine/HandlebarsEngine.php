@@ -263,7 +263,7 @@ class HandlebarsEngine
     /**
      * Returns an instance of the current Backend User.
      *
-     * @return BackendUserAuthentication
+     * @return BackendUserAuthentication|null
      */
     protected function getBackendUser()
     {
