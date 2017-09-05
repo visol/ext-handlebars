@@ -167,7 +167,18 @@ class HandlebarsEngine
                 },
                 'lookup' => function ($labels, $key) {
                     return isset($labels[$key]) ? $labels[$key] : '';
-                }
+                },
+                'ifEqual' => function () {
+                    $arguments = func_get_args();
+                    $context = array_pop($arguments);
+                    return count(array_unique($arguments)) === 1 ? $context['fn']() : ($context['inverse'] ? $context['inverse']() : '');
+                },
+                'ifAny' => function () {
+                    $arguments = func_get_args();
+                    $context = array_pop($arguments);
+                    $notEmptyArguments = array_filter($arguments);
+                    return (count($notEmptyArguments) > 0) ? $context['fn']() : ($context['inverse'] ? $context['inverse']() : '');
+                },
             ],
             // Registration of a partial-resolver to provide support for partials
             'partialresolver' => function ($cx, $name) {
