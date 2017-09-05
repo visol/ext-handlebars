@@ -19,7 +19,7 @@
     },
     "require": {
         "zordius/lightncandy": "^1.1",
-        "sinso/translationapi": "^1.2.0"
+        "sinso/translationapi": "^2.0.0"
     },
     "require-dev": {
     }
