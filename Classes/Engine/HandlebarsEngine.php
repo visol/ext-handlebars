@@ -1,4 +1,5 @@
 <?php
+
 namespace JFB\Handlebars\Engine;
 
 /***************************************************************
@@ -27,6 +28,7 @@ namespace JFB\Handlebars\Engine;
  ***************************************************************/
 
 use JFB\Handlebars\DataProvider\DataProviderInterface;
+use JFB\Handlebars\HelperRegistry;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -147,31 +149,42 @@ class HandlebarsEngine
     /**
      * @return array
      */
-    protected function getOptions() : array
+    protected function getOptions(): array
     {
         return [
             // Definition of flags (Docs: https://github.com/zordius/lightncandy#compile-options)
             'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
             // Provisioning of custom helpers
-            'helpers' => [
-                'content' => function($context) {
-                    // TODO: Implement content and matching block helper, see https://github.com/shannonmoeller/handlebars-layouts
-                    throw new \Exception('Handlebars block/content helpers not implemented (see https://github.com/shannonmoeller/handlebars-layouts).', 1497617391);
-                },
-                'block' => function($context) {
-                    // TODO: Implement block and matching content helper, see https://github.com/shannonmoeller/handlebars-layouts
-                    return $context;
-                },
-                'json' => function ($context) {
-                    return json_encode($context, JSON_HEX_APOS);
-                },
-                'lookup' => function ($labels, $key) {
-                    return isset($labels[$key]) ? $labels[$key] : '';
-                }
-            ],
+            'helpers' => array_merge(
+                $this->getDefaultHelpers(),
+                HelperRegistry::getInstance()->getHelpers()
+            ),
             // Registration of a partial-resolver to provide support for partials
             'partialresolver' => function ($cx, $name) {
                 return $this->getPartialCode($cx, $name);
+            }
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultHelpers(): array
+    {
+        return [
+            'content' => function ($context) {
+                // TODO: Implement content and matching block helper, see https://github.com/shannonmoeller/handlebars-layouts
+                throw new \Exception('Handlebars block/content helpers not implemented (see https://github.com/shannonmoeller/handlebars-layouts).', 1497617391);
+            },
+            'block' => function ($context) {
+                // TODO: Implement block and matching content helper, see https://github.com/shannonmoeller/handlebars-layouts
+                return $context;
+            },
+            'json' => function ($context) {
+                return json_encode($context, JSON_HEX_APOS);
+            },
+            'lookup' => function ($labels, $key) {
+                return isset($labels[$key]) ? $labels[$key] : '';
             }
         ];
     }
