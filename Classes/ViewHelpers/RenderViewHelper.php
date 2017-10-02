@@ -37,6 +37,7 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 
     /**
      * @param string $template
+     * @param array $settings
      * @param array $data
      * @return string
      */
