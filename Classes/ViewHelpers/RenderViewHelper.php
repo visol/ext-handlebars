@@ -67,6 +67,7 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     {
         /** @var HandlebarsView $handlebarsView */
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
+        $handlebarsView->setControllerContext($this->controllerContext);
 
         if (
             isset($settings['handlebars'])
