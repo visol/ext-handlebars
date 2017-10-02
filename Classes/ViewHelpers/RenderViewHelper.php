@@ -32,6 +32,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * == Examples ==
+ *
+ * Don't forget to set your TS configuration in the loaded plugin if needed
+ *
+ * settings.handlebars < lib.handlebars
+ *
+ * <code title="Default parameters">
+ * <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+ *       xmlns:h="http://typo3.org/ns/JFB/Handlebars/ViewHelpers"
+ *       data-namespace-typo3-fluid="true"
+ * >
+ *   <h:render template="modules/introduction/introduction.hbs" settings="{settings}" data="{
+ *       headline: display_name,
+ *       headlineTag: 'h2'
+ *   }" />
+ * </html>
+ * </code>
+ *
+ */
+
+
 class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
 
