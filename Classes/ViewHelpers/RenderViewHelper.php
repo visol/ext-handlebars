@@ -56,7 +56,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
+    /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+    
     /**
      * @param string $template
      * @param array $settings
