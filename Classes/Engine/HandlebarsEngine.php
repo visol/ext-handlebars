@@ -228,10 +228,11 @@ class HandlebarsEngine
             GeneralUtility::mkdir_deep($this->tempPath);
         }
 
-        $templateFileNameAndPath = $this->getTemplateFileNameAndPath();
-        $fileTimeStamp = filemtime($templateFileNameAndPath);
+        $fileNameAndPath = $this->getTemplateFileNameAndPath();
+        $basename = basename($fileNameAndPath);
+        $timeStamp = filemtime($fileNameAndPath);
 
-        return $this->tempPath . basename($templateFileNameAndPath) . $fileTimeStamp . '.php';
+        return $this->tempPath . $basename . '_' . $timeStamp . '_' . sha1($fileNameAndPath) . '.php';
     }
 
     /**
