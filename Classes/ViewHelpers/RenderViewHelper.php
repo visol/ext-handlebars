@@ -50,30 +50,46 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   }" />
  * </html>
  * </code>
- *
  */
-
-
 class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
-    
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('template', 'string', 'template path', true);
+        $this->registerArgument('settings', 'string', 'extension settings', true);
+        $this->registerArgument('data', 'array', 'Passed data array');
+    }
+
     /**
      * @param string $template
      * @param array $settings
      * @param array $data
      * @return string
      */
-    public function render($template, array $settings, array $data = []): string
+    public function render(): string
     {
+        $template = $this->arguments['template'];
+        $settings = $this->arguments['settings'];
+        $data = $this->arguments['data'];
+
         /** @var HandlebarsView $handlebarsView */
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
-        $handlebarsView->setControllerContext($this->controllerContext);
+
+        // @todo fix for TYPO3 v8 can be removed later
+        if ($this->controllerContext !== null) {
+            $controllerContext = $this->controllerContext;
+        } elseif (method_exists($this->renderingContext, 'getControllerContext')) {
+            $controllerContext = $this->renderingContext->getControllerContext();
+        }
+        $handlebarsView->setControllerContext($controllerContext);
 
         if (
             isset($settings['handlebars'])
