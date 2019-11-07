@@ -84,15 +84,15 @@ class HandlebarsEngine
      *
      * @param $settings array
      */
-    public function __construct($settings)
+    public function __construct(array $settings)
     {
-        $this->settings = $settings;
+        $this->settings = $settings ?: [];
         $this->extensionKey = $settings['extensionKey'];
         $this->controllerName = $settings['controllerName'];
         $this->actionName = $settings['actionName'];
         $this->templatePath = $settings['templatePath'];
-        $this->dataProviders = $settings['dataProviders'];
-        $this->additionalData = $settings['additionalData'];
+        $this->dataProviders = $settings['dataProviders'] ?: [];
+        $this->additionalData = $settings['additionalData'] ?: [];
         $this->tempPath = PATH_site . $settings['tempPath'];
     }
 
@@ -119,6 +119,10 @@ class HandlebarsEngine
             /** @var DataProviderInterface $dataProvider */
             $dataProvider = GeneralUtility::makeInstance($dataProviderClass, $this->settings);
             $data = array_merge_recursive($data, $dataProvider->provide());
+        }
+
+        if (! is_array($this->additionalData)) {
+            return $data;
         }
 
         return array_merge_recursive($data, $this->additionalData);
