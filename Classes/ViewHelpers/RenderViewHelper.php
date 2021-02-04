@@ -51,7 +51,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * </html>
  * </code>
  */
-class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class RenderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
@@ -99,7 +99,7 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
         } else {
             $settings = [];
         }
- 
+
         $settings = array_merge_recursive($settings, [
             'dataProviders' => [
                 LabelDataProvider::class,

@@ -1,8 +1,8 @@
 <?php
 namespace JFB\Handlebars\View;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JFB\Handlebars\Engine\HandlebarsEngine;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 
 /***************************************************************
