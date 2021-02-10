@@ -19,7 +19,7 @@
     },
     "require": {
         "php": "^7.0",
-        "typo3/cms-core": "^8.7.13|| ^10.4.10",
+        "typo3/cms-core": "^8.7.13 || ^9.5.17 || ^10.4.10",
         "zordius/lightncandy": "^1.2",
         "sinso/translationapi": "^2.0.0"
     },
