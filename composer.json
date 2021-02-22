@@ -1,6 +1,6 @@
 {
     "name": "jfb/handlebars",
-    "description": "",
+    "description": "This is a TYPO3 CMS extension to render native handlebars templates",
     "type": "typo3-cms-extension",
     "version": "1.0.1",
     "homepage": "",
@@ -20,7 +20,7 @@
     "require": {
         "php": "^7.0",
         "typo3/cms-core": "^8.7.13|| ^9.5.0",
-        "zordius/lightncandy": "^1.1",
+        "zordius/lightncandy": "^1.2",
         "sinso/translationapi": "^2.0.0"
     },
     "require-dev": {
