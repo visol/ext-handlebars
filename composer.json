@@ -1,6 +1,6 @@
 {
     "name": "jfb/handlebars",
-    "description": "",
+    "description": "This is a TYPO3 CMS extension to render native handlebars templates",
     "type": "typo3-cms-extension",
     "version": "1.0.1",
     "homepage": "",
