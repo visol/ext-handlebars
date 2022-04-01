@@ -2,6 +2,7 @@
 
 namespace JFB\Handlebars\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use JFB\Handlebars\DataProvider\LabelDataProvider;
 use JFB\Handlebars\DataProvider\TyposcriptDataProvider;
 use JFB\Handlebars\View\HandlebarsView;
@@ -51,7 +52,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * </html>
  * </code>
  */
-class RenderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class RenderViewHelper extends AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
@@ -84,8 +85,8 @@ class RenderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHel
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
 
         // @todo fix for TYPO3 v8 can be removed later
-        if ($this->controllerContext !== null) {
-            $controllerContext = $this->controllerContext;
+        if ($this->renderingContext->getControllerContext() !== null) {
+            $controllerContext = $this->renderingContext->getControllerContext();
         } elseif (method_exists($this->renderingContext, 'getControllerContext')) {
             $controllerContext = $this->renderingContext->getControllerContext();
         }

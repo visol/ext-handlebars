@@ -1,27 +1,22 @@
 {
-    "name": "jfb/handlebars",
-    "description": "This is a TYPO3 CMS extension to render native handlebars templates",
-    "type": "typo3-cms-extension",
-    "version": "1.0.1",
-    "homepage": "",
-    "license": "GPL-2.0+",
-    "preferred-install": "dist",
-    "support": {
-        "irc": "",
-        "issues": ""
-    },
-    "autoload": {
-        "psr-4": {
-            "JFB\\Handlebars\\": "Classes/"
-        }
-    },
-    "suggest": {
-    },
-    "require": {
-        "php": "^7.0",
-        "typo3/cms-core": "^8.7.13 || ^9.5.17 || ^10.4.10 || ^v11.5.8",
-        "zordius/lightncandy": "^1.2"
-    },
-    "require-dev": {
+  "name": "jfb/handlebars",
+  "description": "This is a TYPO3 CMS extension to render native handlebars templates",
+  "type": "typo3-cms-extension",
+  "license": "GPL-2.0+",
+  "autoload": {
+    "psr-4": {
+      "JFB\\Handlebars\\": "Classes/"
     }
+  },
+  "require": {
+    "php": "^7.0",
+    "typo3/cms-core": "^8.7.13 || ^9.5.17 || ^10.4.10 || ^v11.5.8",
+    "zordius/lightncandy": "^1.2"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "handlebars"
+    }
+  },
+  "version": "1.0.1"
 }

@@ -1,6 +1,7 @@
 <?php
 namespace JFB\Handlebars\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use JFB\Handlebars\View\HandlebarsView;
 
 /***************************************************************
@@ -30,7 +31,7 @@ use JFB\Handlebars\View\HandlebarsView;
  * /**
  * Class AbstractHandlebarsController
  */
-abstract class AbstractHandlebarsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class AbstractHandlebarsController extends ActionController
 {
 
     /** @var $view HandlebarsView */
