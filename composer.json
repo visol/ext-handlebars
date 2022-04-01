@@ -9,8 +9,8 @@
     }
   },
   "require": {
-    "php": "^7.0",
-    "typo3/cms-core": "^8.7.13 || ^9.5.17 || ^10.4.10 || ^v11.5.8",
+    "php": "^7.4",
+    "typo3/cms-core": "^v11.5.8",
     "zordius/lightncandy": "^1.2"
   },
   "extra": {

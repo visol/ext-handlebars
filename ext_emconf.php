@@ -4,7 +4,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Handlebars',
     'description' => 'Handlebars compiler based on open-source project "lightncandy" (https://github.com/zordius/lightncandy)',
     'category' => 'misc',
-    'version' => '1.0.0',
+    'version' => '1.0.1',
     'state' => 'stable',
     'clearCacheOnLoad' => true,
     'author' => 'Fabien Udriot, Alessandro Bellafronte',
@@ -16,8 +16,8 @@ $EM_CONF[$_EXTKEY] = [
         ],
     'constraints' => [
         'depends' => [
-            'php' => '7.0.0-0.0.0',
-            'typo3' => '8.7.13-11.5.99',
+            'php' => '7.4.0-0.0.0',
+            'typo3' => '11.5.99',
             'extbase' => '',
         ],
         'conflicts' => [
