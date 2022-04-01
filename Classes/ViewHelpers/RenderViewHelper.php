@@ -102,7 +102,6 @@ class RenderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHel
 
         $settings = array_merge_recursive($settings, [
             'dataProviders' => [
-                LabelDataProvider::class,
                 TyposcriptDataProvider::class
             ],
             'templatePath' => $settings['templatesRootPath'] . $template,
