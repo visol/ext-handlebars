@@ -19,8 +19,7 @@
     },
     "require": {
         "php": "^7.0",
-        "zordius/lightncandy": "^1.2",
-        "sinso/translationapi": "^2.0.0"
+        "zordius/lightncandy": "^1.2"
     },
     "require-dev": {
     }

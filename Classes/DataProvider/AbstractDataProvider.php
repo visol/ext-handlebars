@@ -37,11 +37,6 @@ abstract class AbstractDataProvider implements DataProviderInterface
     protected $settings;
 
 
-    /**
-     * LabelDataProvider constructor.
-     *
-     * @param array $settings
-     */
     public function __construct($settings)
     {
         $this->settings = $settings;

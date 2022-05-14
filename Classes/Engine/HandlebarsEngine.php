@@ -31,6 +31,7 @@ use JFB\Handlebars\DataProvider\DataProviderInterface;
 use JFB\Handlebars\HelperRegistry;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -114,6 +115,10 @@ class HandlebarsEngine
     public function getData()
     {
         $data = [];
+
+        if (!isset($this->settings['dataProviders'])) {
+            $this->settings['dataProviders'] = $this->getDefaultDataProviders();
+        }
 
         foreach ($this->settings['dataProviders'] as $dataProviderClass) {
             /** @var DataProviderInterface $dataProvider */
@@ -284,4 +289,10 @@ class HandlebarsEngine
         return $GLOBALS['BE_USER'];
     }
 
+    protected function getDefaultDataProviders()
+    {
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $defaultDataProviders = (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
+        return $defaultDataProviders;
+    }
 }

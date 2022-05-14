@@ -2,8 +2,6 @@
 
 namespace JFB\Handlebars\ViewHelpers;
 
-use JFB\Handlebars\DataProvider\LabelDataProvider;
-use JFB\Handlebars\DataProvider\TyposcriptDataProvider;
 use JFB\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -85,10 +83,6 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
         }
  
         $settings = array_merge_recursive($settings, [
-            'dataProviders' => [
-                LabelDataProvider::class,
-                TyposcriptDataProvider::class
-            ],
             'templatePath' => $settings['templatesRootPath'] . $template,
             'additionalData' => $data
         ]);
