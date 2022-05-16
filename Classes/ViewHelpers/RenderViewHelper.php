@@ -4,6 +4,7 @@ namespace JFB\Handlebars\ViewHelpers;
 
 use JFB\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /***************************************************************
  *
@@ -52,7 +53,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 
 
-class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class RenderViewHelper extends AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
