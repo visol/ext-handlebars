@@ -61,23 +61,26 @@ class RenderViewHelper extends AbstractViewHelper
      * @var boolean
      */
     protected $escapeOutput = false;
-    
-    /**
-     * @param string $template
-     * @param array $settings
-     * @param array $data
-     * @return string
-     */
-    public function render($template, array $settings, array $data = []): string
+
+    public function initializeArguments(): void
     {
+        parent::initializeArguments();
+        $this->registerArgument('template', 'string', '', true);
+        $this->registerArgument('settings', 'array', '', false, []);
+        $this->registerArgument('data', 'array', '', false, []);
+    }
+    
+    public function render(): string
+    {
+        $template = $this->arguments['template'];
+        $settings = $this->arguments['settings'];
+        $data = $this->arguments['data'];
+        
         /** @var HandlebarsView $handlebarsView */
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
         $handlebarsView->setControllerContext($this->controllerContext);
 
-        if (
-            isset($settings['handlebars'])
-            && is_array($settings['handlebars'])
-        ) {
+        if (isset($settings['handlebars']) && is_array($settings['handlebars'])) {
             $settings = $settings['handlebars'];
         } else {
             $settings = [];
