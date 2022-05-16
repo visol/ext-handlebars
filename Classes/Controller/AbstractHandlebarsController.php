@@ -2,6 +2,7 @@
 namespace JFB\Handlebars\Controller;
 
 use JFB\Handlebars\View\HandlebarsView;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************
  *  Copyright notice
@@ -30,7 +31,7 @@ use JFB\Handlebars\View\HandlebarsView;
  * /**
  * Class AbstractHandlebarsController
  */
-abstract class AbstractHandlebarsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class AbstractHandlebarsController extends ActionController
 {
 
     /** @var $view HandlebarsView */

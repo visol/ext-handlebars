@@ -32,6 +32,7 @@ use JFB\Handlebars\HelperRegistry;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -94,7 +95,7 @@ class HandlebarsEngine
         $this->templatePath = $settings['templatePath'];
         $this->dataProviders = $settings['dataProviders'];
         $this->additionalData = $settings['additionalData'];
-        $this->tempPath = PATH_site . $settings['tempPath'];
+        $this->tempPath = Environment::getPublicPath() . '/' . $settings['tempPath'];
     }
 
     /**
