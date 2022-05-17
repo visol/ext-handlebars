@@ -2,6 +2,7 @@
 
 namespace JFB\Handlebars\ViewHelpers;
 
+use JFB\Handlebars\Rendering\RenderingContext;
 use JFB\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -76,9 +77,14 @@ class RenderViewHelper extends AbstractViewHelper
         $settings = $this->arguments['settings'];
         $data = $this->arguments['data'];
         
-        /** @var HandlebarsView $handlebarsView */
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
-        $handlebarsView->setControllerContext($this->controllerContext);
+        $handlebarsRenderingContext = GeneralUtility::makeInstance(
+            RenderingContext::class,
+            $this->renderingContext->getRequest()->getControllerExtensionName(),
+            $this->renderingContext->getControllerName(),
+            $this->renderingContext->getControllerAction(),
+        );
+        $handlebarsView->setRenderingContext($handlebarsRenderingContext);
 
         if (isset($settings['handlebars']) && is_array($settings['handlebars'])) {
             $settings = $settings['handlebars'];
