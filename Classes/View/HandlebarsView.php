@@ -45,7 +45,7 @@ class HandlebarsView implements ViewInterface
     public function render()
     {
         $settings = $this->variables['settings'];
-        $settings = array_merge_recursive($settings, $this->getContextVariables());
+        $settings = array_replace_recursive($settings, $this->getContextVariables());
         $handlebarsEngine = GeneralUtility::makeInstance(
             HandlebarsEngine::class,
             $settings

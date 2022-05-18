@@ -92,8 +92,9 @@ class RenderViewHelper extends AbstractViewHelper
             $settings = [];
         }
  
-        $settings = array_merge_recursive($settings, [
-            'templatePath' => $settings['templatesRootPath'] . $template,
+        $settings = array_replace_recursive($settings, [
+            'templatesRootPath' => $settings['templatesRootPath'],
+            'template' => $template,
             'additionalData' => $data
         ]);
 

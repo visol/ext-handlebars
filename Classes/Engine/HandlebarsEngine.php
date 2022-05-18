@@ -28,6 +28,8 @@ namespace JFB\Handlebars\Engine;
  ***************************************************************/
 
 use JFB\Handlebars\DataProvider\DataProviderInterface;
+use JFB\Handlebars\Exception\NoTemplateConfiguredException;
+use JFB\Handlebars\Exception\TemplateNotFoundException;
 use JFB\Handlebars\HelperRegistry;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -61,11 +63,12 @@ class HandlebarsEngine
      */
     protected $actionName;
 
-    /**
-     * @var string
-     */
-    protected $templatePath;
+    protected ?string $templatesRootPath;
 
+    protected ?string $partialsRootPath;
+
+    protected ?string $template;
+    
     /**
      * @var array
      */
@@ -92,7 +95,9 @@ class HandlebarsEngine
         $this->extensionKey = $settings['extensionKey'];
         $this->controllerName = $settings['controllerName'];
         $this->actionName = $settings['actionName'];
-        $this->templatePath = $settings['templatePath'];
+        $this->templatesRootPath = $settings['templatesRootPath'] ?? null;
+        $this->partialsRootPath = $settings['partialsRootPath'] ?? null;
+        $this->template = $settings['template'] ?? $settings['templatePath'] ?? null;
         $this->dataProviders = $settings['dataProviders'];
         $this->additionalData = $settings['additionalData'];
         $this->tempPath = Environment::getPublicPath() . '/' . $settings['tempPath'];
@@ -137,19 +142,32 @@ class HandlebarsEngine
      */
     public function getRenderer(): callable
     {
-        $compileFileNameAndPath = $this->getCompiledFileNameAndPath();
+        if (!isset($this->template)) {
+            throw new NoTemplateConfiguredException('No template configured for HandlebarsEngine');
+        }
+        return $this->getRendererForTemplate($this->template);
+    }
 
-        if (!is_file($compileFileNameAndPath) || $this->isBackendUserOnline()) { // if we have a BE login always compile the template
+    public function getRendererForTemplate(string $template): callable
+    {
+        $templatePathAndFilename = $this->getTemplatePathAndFilename($template);
+        if (!isset($templatePathAndFilename)) {
+            throw new TemplateNotFoundException($template, $this->templatesRootPath);
+        }
+        
+        $compiledCodePathAndFilename = $this->getCompiledCodePathAndFilename($templatePathAndFilename);
+
+        if (!is_file($compiledCodePathAndFilename) || $this->isBackendUserOnline()) { // if we have a BE login always compile the template
 
             // Compiling to PHP Code
-            $compiledCode = LightnCandy::compile($this->getTemplateCode(), $this->getOptions());
+            $compiledCode = LightnCandy::compile($this->getTemplateCode($templatePathAndFilename), $this->getOptions());
 
             // Save the compiled PHP code into a php file
-            file_put_contents($compileFileNameAndPath, '<?php ' . $compiledCode . '?>');
+            file_put_contents($compiledCodePathAndFilename, '<?php ' . $compiledCode . '?>');
         }
 
         // Returning the callable php file
-        return include($compileFileNameAndPath);
+        return include($compiledCodePathAndFilename);
     }
 
     /**
@@ -199,9 +217,9 @@ class HandlebarsEngine
      *
      * @return string
      */
-    protected function getTemplateCode(): string
+    protected function getTemplateCode($templatePathAndFilename): string
     {
-        return file_get_contents($this->getTemplateFileNameAndPath());
+        return file_get_contents($templatePathAndFilename);
     }
 
     /**
@@ -214,7 +232,7 @@ class HandlebarsEngine
     protected function getPartialCode($cx, $name): string
     {
         $partialContent = '';
-        $partialFileNameAndPath = $this->getPartialFileNameAndPath($name);
+        $partialFileNameAndPath = $this->getPartialPathAndFileName($name);
         if (file_exists($partialFileNameAndPath)) {
             $partialContent = file_get_contents($partialFileNameAndPath);
         }
@@ -226,28 +244,33 @@ class HandlebarsEngine
      *
      * @return string
      */
-    protected function getCompiledFileNameAndPath(): string
+    protected function getCompiledCodePathAndFileName(string $templatePathAndFilename): string
     {
         // Creates the directory if not existing
         if (!is_dir($this->tempPath)) {
             GeneralUtility::mkdir_deep($this->tempPath);
         }
 
-        $fileNameAndPath = $this->getTemplateFileNameAndPath();
-        $basename = basename($fileNameAndPath);
-        $timeStamp = filemtime($fileNameAndPath);
+        $basename = basename($templatePathAndFilename);
+        $timeStamp = filemtime($templatePathAndFilename);
 
-        return $this->tempPath . $basename . '_' . $timeStamp . '_' . sha1($fileNameAndPath) . '.php';
+        return $this->tempPath . $basename . '_' . $timeStamp . '_' . sha1($templatePathAndFilename) . '.php';
     }
 
     /**
      * Returns the template filename and path
      *
+     * @param string $template
      * @return string
      */
-    protected function getTemplateFileNameAndPath(): string
+    protected function getTemplatePathAndFilename(string $template): ?string
     {
-        return GeneralUtility::getFileAbsFileName($this->templatePath);
+        $candidates = [$template];
+        if (isset($this->templatesRootPath)) {
+            $candidates[] = $this->templatesRootPath . $template;
+        }
+        
+        return $this->findHbsFile($candidates);
     }
 
     /**
@@ -255,21 +278,41 @@ class HandlebarsEngine
      * 1. Lookup below partialsRootPath
      * 2. Lookup below templatesRootPath
      *
-     * @param $name
-     * @return string
+     * @param string $name
+     * @return string|null
      */
-    protected function getPartialFileNameAndPath($name): string
+    protected function getPartialPathAndFileName(string $name): ?string
     {
-        $fileName = $name . '.hbs';
-        $absFileNameAndPath = GeneralUtility::getFileAbsFileName($this->settings['partialsRootPath'] . $fileName);
-
-        if (!$absFileNameAndPath) {
-            $absFileNameAndPath = GeneralUtility::getFileAbsFileName($this->settings['templatesRootPath'] . $fileName);
+        $candidates = [$name];
+        if (isset($this->partialsRootPath)) {
+            $candidates[] = $this->partialsRootPath . $name;
         }
-
-        return $absFileNameAndPath;
+        if (isset($this->templatesRootPath)) {
+            $candidates[] = $this->templatesRootPath . $name;
+        }
+        
+        return $this->findHbsFile($candidates);
     }
 
+    protected function findHbsFile(array $basenameCandidates): ?string
+    {
+        foreach ($basenameCandidates as $basenameCandidate) {
+            $candidates = [
+                $basenameCandidate,
+                $basenameCandidate . '.hbs'
+            ];
+            
+            foreach($candidates as $candidate) {
+                $pathAndFilename = GeneralUtility::getFileAbsFileName($candidate);
+                if (is_file($pathAndFilename)) {
+                    return $pathAndFilename;
+                }
+            }
+        }
+
+        return null;
+    }
+    
     /**
      * Returns backend user online status
      * @return bool
