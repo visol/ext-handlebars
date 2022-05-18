@@ -21,6 +21,11 @@
         "zordius/lightncandy": "^1.2"
     },
     "require-dev": {
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "handlebars"
+        }
     }
 }
 
