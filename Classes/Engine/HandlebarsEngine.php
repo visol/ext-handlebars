@@ -157,14 +157,13 @@ class HandlebarsEngine
      */
     protected function getOptions(): array
     {
+        $helpers = $this->getViewHelpers();
+
         return [
             // Definition of flags (Docs: https://github.com/zordius/lightncandy#compile-options)
             'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
             // Provisioning of custom helpers
-            'helpers' => array_merge(
-                $this->getDefaultHelpers(),
-                HelperRegistry::getInstance()->getHelpers()
-            ),
+            'helpers' => $helpers,
             // Registration of a partial-resolver to provide support for partials
             'partialresolver' => function ($cx, $name) {
                 return $this->getPartialCode($cx, $name);
@@ -295,5 +294,15 @@ class HandlebarsEngine
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $defaultDataProviders = (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
         return $defaultDataProviders;
+    }
+
+    protected function getViewHelpers(): array
+    {
+        $helpers = array_merge(
+            $this->getDefaultHelpers(),
+            HelperRegistry::getInstance()->getHelpers()
+        );
+        array_walk($helpers, fn($helperFunction) => \Closure::bind($helperFunction, $this, $this));
+        return $helpers;
     }
 }
