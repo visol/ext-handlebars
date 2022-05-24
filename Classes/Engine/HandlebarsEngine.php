@@ -195,14 +195,6 @@ class HandlebarsEngine
     protected function getDefaultHelpers(): array
     {
         return [
-            'content' => function ($context) {
-                // TODO: Implement content and matching block helper, see https://github.com/shannonmoeller/handlebars-layouts
-                throw new \Exception('Handlebars block/content helpers not implemented (see https://github.com/shannonmoeller/handlebars-layouts).', 1497617391);
-            },
-            'block' => function ($context) {
-                // TODO: Implement block and matching content helper, see https://github.com/shannonmoeller/handlebars-layouts
-                return $context;
-            },
             'json' => function ($context) {
                 return json_encode($context, JSON_HEX_APOS);
             },
