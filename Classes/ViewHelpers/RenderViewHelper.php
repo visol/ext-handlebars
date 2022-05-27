@@ -80,9 +80,7 @@ class RenderViewHelper extends AbstractViewHelper
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
         $handlebarsRenderingContext = GeneralUtility::makeInstance(
             RenderingContext::class,
-            $this->renderingContext->getRequest()->getControllerExtensionName(),
-            $this->renderingContext->getControllerName(),
-            $this->renderingContext->getControllerAction(),
+            $this->renderingContext->getRequest()
         );
         $handlebarsView->setRenderingContext($handlebarsRenderingContext);
 
