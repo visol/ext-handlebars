@@ -2,31 +2,38 @@
 
 namespace JFB\Handlebars\Rendering;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+
 class RenderingContext
 {
-    protected ?string $extensionKey = null;
-    protected ?string $controllerName = null;
-    protected ?string $actionName = null;
+    protected ?Request $request;
 
-    public function __construct(?string $extensionKey, ?string $controllerName, ?string $actionName)
+    public function __construct(?Request $request)
     {
-        $this->extensionKey = $extensionKey;
-        $this->controllerName = $controllerName;
-        $this->actionName = $actionName;
+        $this->request = $request;
     }
     
     public function getExtensionKey(): ?string
     {
-        return $this->extensionKey;
+        return $this->request->getControllerExtensionKey();
     }
 
     public function getControllerName(): ?string
     {
-        return $this->controllerName;
+        return $this->request->getControllerName();
     }
 
     public function getActionName(): ?string
     {
-        return $this->actionName;
+        return $this->request->getControllerActionName();
+    }
+
+    public function getUriBuilder(): UriBuilder
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+        return $uriBuilder;
     }
 }

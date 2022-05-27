@@ -75,14 +75,12 @@ class HandlebarsView implements ViewInterface
     
     public function setControllerContext(ControllerContext $controllerContext)
     {
-        $this->renderingContext = GeneralUtility::makeInstance(
+        $this->setRenderingContext(GeneralUtility::makeInstance(
             RenderingContext::class,
-            $controllerContext->getRequest()->getControllerExtensionKey(),
-            $controllerContext->getRequest()->getControllerName(),
-            $controllerContext->getRequest()->getControllerActionName()
-        );
+            $controllerContext->getRequest()
+        ));
     }
-
+    
     /**
      * Add a variable to $this->viewData.
      * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
