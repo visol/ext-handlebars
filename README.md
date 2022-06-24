@@ -13,7 +13,7 @@ such as `content`, `block`, `json`, `lookup`. On the top of that we can add new
 custom handlebars helper which can be declared in `ext_localconf.php` as follows
 
 ```
-\JFB\Handlebars\HelperRegistry::getInstance()->register(
+\Visol\Handlebars\HelperRegistry::getInstance()->register(
     'foo', 
     function ($labels, $key) {
         return $labels[$key];

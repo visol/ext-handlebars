@@ -1,5 +1,5 @@
 <?php
-namespace JFB\Handlebars;
+namespace Visol\Handlebars;
 
 /*
  * This file is part of the JFB/Handlebars project under GPLv2 or later.

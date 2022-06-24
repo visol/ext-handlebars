@@ -1,9 +1,9 @@
 <?php
 
-namespace JFB\Handlebars\ViewHelpers;
+namespace Visol\Handlebars\ViewHelpers;
 
-use JFB\Handlebars\Rendering\RenderingContext;
-use JFB\Handlebars\View\HandlebarsView;
+use Visol\Handlebars\Rendering\RenderingContext;
+use Visol\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 

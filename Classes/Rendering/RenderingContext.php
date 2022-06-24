@@ -1,6 +1,6 @@
 <?php
 
-namespace JFB\Handlebars\Rendering;
+namespace Visol\Handlebars\Rendering;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;

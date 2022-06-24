@@ -1,7 +1,7 @@
 <?php
-namespace JFB\Handlebars\Controller;
+namespace Visol\Handlebars\Controller;
 
-use JFB\Handlebars\View\HandlebarsView;
+use Visol\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************
