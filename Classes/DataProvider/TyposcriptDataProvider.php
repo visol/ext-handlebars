@@ -1,5 +1,5 @@
 <?php
-namespace JFB\Handlebars\DataProvider;
+namespace Visol\Handlebars\DataProvider;
 
 /***************************************************************
  *  Copyright notice

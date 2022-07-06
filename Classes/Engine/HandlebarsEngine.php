@@ -1,6 +1,6 @@
 <?php
 
-namespace JFB\Handlebars\Engine;
+namespace Visol\Handlebars\Engine;
 
 /***************************************************************
  *  Copyright notice
@@ -27,10 +27,10 @@ namespace JFB\Handlebars\Engine;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use JFB\Handlebars\DataProvider\DataProviderInterface;
-use JFB\Handlebars\Exception\NoTemplateConfiguredException;
-use JFB\Handlebars\Exception\TemplateNotFoundException;
-use JFB\Handlebars\HelperRegistry;
+use Visol\Handlebars\DataProvider\DataProviderInterface;
+use Visol\Handlebars\Exception\NoTemplateConfiguredException;
+use Visol\Handlebars\Exception\TemplateNotFoundException;
+use Visol\Handlebars\HelperRegistry;
 use LightnCandy\LightnCandy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

@@ -1,9 +1,9 @@
 <?php
-namespace JFB\Handlebars\View;
+namespace Visol\Handlebars\View;
 
-use JFB\Handlebars\Rendering\RenderingContext;
+use Visol\Handlebars\Rendering\RenderingContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use JFB\Handlebars\Engine\HandlebarsEngine;
+use Visol\Handlebars\Engine\HandlebarsEngine;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 

@@ -1,5 +1,5 @@
 {
-    "name": "jfb/handlebars",
+    "name": "visol/typo3-handlebars",
     "description": "This is a TYPO3 CMS extension to render native handlebars templates",
     "type": "typo3-cms-extension",
     "homepage": "",
@@ -11,7 +11,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JFB\\Handlebars\\": "Classes/"
+            "Visol\\Handlebars\\": "Classes/"
         }
     },
     "suggest": {

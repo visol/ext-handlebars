@@ -1,6 +1,6 @@
 <?php
 
-namespace JFB\Handlebars\Exception;
+namespace Visol\Handlebars\Exception;
 
 class NoTemplateConfiguredException extends \RuntimeException
 {
