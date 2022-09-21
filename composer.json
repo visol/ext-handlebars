@@ -4,7 +4,6 @@
     "type": "typo3-cms-extension",
     "homepage": "https://www.visol.ch",
     "license": "GPL-2.0-or-later",
-    "preferred-install": "dist",
     "autoload": {
         "psr-4": {
             "Visol\\Handlebars\\": "Classes/"
@@ -24,6 +23,11 @@
         "typo3/cms": {
             "extension-key": "handlebars"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
     }
 }
-
