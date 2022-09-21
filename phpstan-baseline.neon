@@ -1,0 +1,161 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$view HandlebarsView\\)\\: Unexpected token \"\\$view\", expected type at offset 9$#"
+			count: 1
+			path: Classes/Controller/AbstractHandlebarsController.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\DataProvider\\\\AbstractDataProvider\\:\\:__construct\\(\\) has parameter \\$settings with no type specified\\.$#"
+			count: 1
+			path: Classes/DataProvider/AbstractDataProvider.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:__construct\\(\\) has parameter \\$settings with no type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getData\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getDefaultDataProviders\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getPartialCode\\(\\) has parameter \\$cx with no type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getPartialCode\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getPartialCode\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getTemplateCode\\(\\) has parameter \\$templatePathAndFilename with no type specified\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Engine\\\\HandlebarsEngine\\:\\:getTemplateCode\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Offset 'uid' does not exist on array\\|null\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Parameter \\#1 \\$filename of function file_exists expects string, string\\|null given\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Parameter \\#1 \\$filename of function file_get_contents expects string, string\\|null given\\.$#"
+			count: 1
+			path: Classes/Engine/HandlebarsEngine.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\HelperRegistry\\:\\:getInstance\\(\\) should return Visol\\\\Handlebars\\\\HelperRegistry but returns object\\.$#"
+			count: 1
+			path: Classes/HelperRegistry.php
+
+		-
+			message: "#^PHPDoc tag @return with type object is not subtype of native type Visol\\\\Handlebars\\\\HelperRegistry\\.$#"
+			count: 1
+			path: Classes/HelperRegistry.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:setRequest\\(\\)\\.$#"
+			count: 1
+			path: Classes/Rendering/RenderingContext.php
+
+		-
+			message: "#^Cannot call method getControllerActionName\\(\\) on TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request\\|null\\.$#"
+			count: 1
+			path: Classes/Rendering/RenderingContext.php
+
+		-
+			message: "#^Cannot call method getControllerExtensionKey\\(\\) on TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request\\|null\\.$#"
+			count: 1
+			path: Classes/Rendering/RenderingContext.php
+
+		-
+			message: "#^Cannot call method getControllerName\\(\\) on TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request\\|null\\.$#"
+			count: 1
+			path: Classes/Rendering/RenderingContext.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\Rendering\\\\RenderingContext\\:\\:getUriBuilder\\(\\) should return TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder but returns object\\.$#"
+			count: 1
+			path: Classes/Rendering/RenderingContext.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:compile\\(\\)\\.$#"
+			count: 1
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\View\\\\HandlebarsView\\:\\:initializeView\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\View\\\\HandlebarsView\\:\\:setControllerContext\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Method Visol\\\\Handlebars\\\\View\\\\HandlebarsView\\:\\:setRenderingContext\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Parameter \\#1 \\$renderingContext of method Visol\\\\Handlebars\\\\View\\\\HandlebarsView\\:\\:setRenderingContext\\(\\) expects Visol\\\\Handlebars\\\\Rendering\\\\RenderingContext, object given\\.$#"
+			count: 1
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
+			count: 3
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function strtolower expects string, string\\|null given\\.$#"
+			count: 3
+			path: Classes/View/HandlebarsView.php
+
+		-
+			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
+			count: 1
+			path: Classes/ViewHelpers/RenderViewHelper.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:assign\\(\\)\\.$#"
+			count: 1
+			path: Classes/ViewHelpers/RenderViewHelper.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:render\\(\\)\\.$#"
+			count: 1
+			path: Classes/ViewHelpers/RenderViewHelper.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:setRenderingContext\\(\\)\\.$#"
+			count: 1
+			path: Classes/ViewHelpers/RenderViewHelper.php
