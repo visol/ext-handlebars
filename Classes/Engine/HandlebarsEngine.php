@@ -98,8 +98,8 @@ class HandlebarsEngine
         $this->templatesRootPath = $settings['templatesRootPath'] ?? null;
         $this->partialsRootPath = $settings['partialsRootPath'] ?? null;
         $this->template = $settings['template'] ?? $settings['templatePath'] ?? null;
-        $this->dataProviders = $settings['dataProviders'];
-        $this->additionalData = $settings['additionalData'];
+        $this->dataProviders = $settings['dataProviders'] ?? [];
+        $this->additionalData = $settings['additionalData'] ?? [];
         $this->tempPath = Environment::getPublicPath() . '/' . $settings['tempPath'];
     }
 
