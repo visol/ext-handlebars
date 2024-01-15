@@ -84,7 +84,7 @@ class RenderViewHelper extends AbstractViewHelper
         );
         $handlebarsView->setRenderingContext($handlebarsRenderingContext);
 
-        if (isset($settings['handlebars']) && is_array($settings['handlebars'])) {
+        if (is_array($settings) && isset($settings['handlebars']) && is_array($settings['handlebars'])) {
             $settings = $settings['handlebars'];
         } else {
             $settings = [];
