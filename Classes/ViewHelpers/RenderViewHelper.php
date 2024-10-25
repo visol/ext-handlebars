@@ -2,7 +2,7 @@
 
 namespace Visol\Handlebars\ViewHelpers;
 
-use Visol\Handlebars\Rendering\RenderingContext;
+use Visol\Handlebars\Rendering\HandlebarsContext;
 use Visol\Handlebars\View\HandlebarsView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -79,7 +79,7 @@ class RenderViewHelper extends AbstractViewHelper
         
         $handlebarsView = GeneralUtility::makeInstance(HandlebarsView::class);
         $handlebarsRenderingContext = GeneralUtility::makeInstance(
-            RenderingContext::class,
+            HandlebarsContext::class,
             $this->renderingContext->getRequest()
         );
         $handlebarsView->setRenderingContext($handlebarsRenderingContext);

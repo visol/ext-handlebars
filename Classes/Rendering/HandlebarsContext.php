@@ -2,17 +2,22 @@
 
 namespace Visol\Handlebars\Rendering;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
-class RenderingContext
+class HandlebarsContext
 {
-    protected ?Request $request;
+    protected ?ServerRequestInterface $request;
 
-    public function __construct(?Request $request)
+    public function __construct(?ServerRequestInterface $request)
     {
         $this->request = $request;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
     
     public function getExtensionKey(): ?string
@@ -32,6 +37,7 @@ class RenderingContext
 
     public function getUriBuilder(): UriBuilder
     {
+        // TODO: Implement cache
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
         return $uriBuilder;

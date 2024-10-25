@@ -58,11 +58,6 @@ class HandlebarsEngine
      */
     protected $controllerName;
 
-    /**
-     * @var string
-     */
-    protected $actionName;
-
     protected ?string $templatesRootPath;
 
     protected ?string $partialsRootPath;
@@ -92,9 +87,6 @@ class HandlebarsEngine
     public function __construct($settings)
     {
         $this->settings = $settings;
-        $this->extensionKey = $settings['extensionKey'];
-        $this->controllerName = $settings['controllerName'];
-        $this->actionName = $settings['actionName'];
         $this->templatesRootPath = $settings['templatesRootPath'] ?? null;
         $this->partialsRootPath = $settings['partialsRootPath'] ?? null;
         $this->template = $settings['template'] ?? $settings['templatePath'] ?? null;
