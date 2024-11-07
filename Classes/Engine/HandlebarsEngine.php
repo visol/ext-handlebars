@@ -92,7 +92,7 @@ class HandlebarsEngine
         $this->template = $settings['template'] ?? $settings['templatePath'] ?? null;
         $this->dataProviders = $settings['dataProviders'] ?? [];
         $this->additionalData = $settings['additionalData'] ?? [];
-        $this->tempPath = Environment::getPublicPath() . '/' . $settings['tempPath'];
+        $this->tempPath = Environment::getProjectPath() . '/' . $settings['tempPath'];
     }
 
     /**
