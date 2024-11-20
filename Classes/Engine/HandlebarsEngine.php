@@ -97,8 +97,6 @@ class HandlebarsEngine
 
     /**
      * Runs the compiling process and returns the rendered html
-     *
-     * @return string
      */
     public function compile(): string
     {
@@ -129,13 +127,11 @@ class HandlebarsEngine
 
     /**
      * Compiles the template, stores the output in a cache-file, and returns its callable content
-     *
-     * @return callable
      */
     public function getRenderer(): callable
     {
         if (!isset($this->template)) {
-            throw new NoTemplateConfiguredException('No template configured for HandlebarsEngine');
+            throw new NoTemplateConfiguredException('No template configured for HandlebarsEngine', 8130705640);
         }
         return $this->getRendererForTemplate($this->template);
     }
@@ -162,9 +158,6 @@ class HandlebarsEngine
         return include($compiledCodePathAndFilename);
     }
 
-    /**
-     * @return array
-     */
     protected function getOptions(): array
     {
         $helpers = $this->getViewHelpers();
@@ -181,9 +174,6 @@ class HandlebarsEngine
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function getDefaultHelpers(): array
     {
         return [
@@ -198,8 +188,6 @@ class HandlebarsEngine
 
     /**
      * Returns the content of the current template file
-     *
-     * @return string
      */
     protected function getTemplateCode($templatePathAndFilename): string
     {
@@ -211,22 +199,19 @@ class HandlebarsEngine
      *
      * @param $cx
      * @param $name
-     * @return string
      */
     protected function getPartialCode($cx, $name): string
     {
         $partialContent = '';
         $partialFileNameAndPath = $this->getPartialPathAndFileName($name);
         if (file_exists($partialFileNameAndPath)) {
-            $partialContent = file_get_contents($partialFileNameAndPath);
+            return file_get_contents($partialFileNameAndPath);
         }
         return $partialContent;
     }
 
     /**
      * Returns the filename and path of the cache file
-     *
-     * @return string
      */
     protected function getCompiledCodePathAndFileName(string $templatePathAndFilename): string
     {
@@ -244,7 +229,6 @@ class HandlebarsEngine
     /**
      * Returns the template filename and path
      *
-     * @param string $template
      * @return string
      */
     protected function getTemplatePathAndFilename(string $template): ?string
@@ -261,9 +245,6 @@ class HandlebarsEngine
      * Returns filename and path for a given partial name.
      * 1. Lookup below partialsRootPath
      * 2. Lookup below templatesRootPath
-     *
-     * @param string $name
-     * @return string|null
      */
     protected function getPartialPathAndFileName(string $name): ?string
     {
@@ -299,7 +280,6 @@ class HandlebarsEngine
     
     /**
      * Returns backend user online status
-     * @return bool
      */
     protected function isBackendUserOnline(): bool
     {
@@ -319,8 +299,7 @@ class HandlebarsEngine
     protected function getDefaultDataProviders()
     {
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        $defaultDataProviders = (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
-        return $defaultDataProviders;
+        return (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
     }
 
     protected function getViewHelpers(): array

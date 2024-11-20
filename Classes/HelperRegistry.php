@@ -37,7 +37,6 @@ class HelperRegistry implements SingletonInterface
      * Register a new helper.
      *
      * @param string $name
-     * @param Closure $helper
      * @return $this
      */
     public function register($name, Closure $helper)
@@ -58,9 +57,6 @@ class HelperRegistry implements SingletonInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getHelpers(): array
     {
         return $this->helpers;
