@@ -43,12 +43,23 @@ class HandlebarsView implements ViewInterface
     public function render($templateFileName = null): string
     {
         $settings = $this->variables['settings'];
+        $settings = array_replace_recursive($settings, $this->getContextVariables());
         $handlebarsEngine = GeneralUtility::makeInstance(
             HandlebarsEngine::class,
             $settings
         );
 
         return $handlebarsEngine->compile();
+    }
+
+    protected function getContextVariables(): array
+    {
+        $extbase = $this->renderingContext->getRequest()->getAttribute('extbase');
+        return [
+            'extensionKey' => strtolower($extbase->getControllerExtensionKey()),
+            'controllerName' => strtolower($extbase->getControllerName()),
+            'actionName' => strtolower($extbase->getControllerActionName()),
+        ];
     }
 
     /**
