@@ -42,21 +42,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HandlebarsEngine
 {
+    protected array $settings;
 
-    /**
-     * @var array
-     */
-    protected $settings;
+    protected string $extensionKey;
 
-    /**
-     * @var string
-     */
-    protected $extensionKey;
-
-    /**
-     * @var string
-     */
-    protected $controllerName;
+    protected string $controllerName;
 
     protected ?string $templatesRootPath;
 
@@ -64,27 +54,16 @@ class HandlebarsEngine
 
     protected ?string $template;
     
-    /**
-     * @var array
-     */
-    protected $dataProviders;
+    protected array $dataProviders;
 
-    /**
-     * @var array
-     */
-    protected $additionalData;
+    protected array $additionalData;
 
-    /**
-     * @var string
-     */
-    protected $tempPath;
+    protected string $tempPath;
 
     /**
      * HandlebarsEngine constructor.
-     *
-     * @param $settings array
      */
-    public function __construct($settings)
+    public function __construct(array $settings)
     {
         $this->settings = $settings;
         $this->templatesRootPath = $settings['templatesRootPath'] ?? null;
@@ -105,10 +84,7 @@ class HandlebarsEngine
         return $renderer($data);
     }
 
-    /**
-     *
-     */
-    public function getData()
+    public function getData(): array
     {
         $data = [];
 
@@ -181,7 +157,7 @@ class HandlebarsEngine
                 return json_encode($context, JSON_HEX_APOS);
             },
             'lookup' => function ($labels, $key) {
-                return isset($labels[$key]) ? $labels[$key] : '';
+                return $labels[$key] ?? '';
             }
         ];
     }
@@ -228,8 +204,6 @@ class HandlebarsEngine
 
     /**
      * Returns the template filename and path
-     *
-     * @return string
      */
     protected function getTemplatePathAndFilename(string $template): ?string
     {
@@ -288,15 +262,13 @@ class HandlebarsEngine
 
     /**
      * Returns an instance of the current Backend User.
-     *
-     * @return BackendUserAuthentication|null
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): ?BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getDefaultDataProviders()
+    protected function getDefaultDataProviders(): array
     {
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         return (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
