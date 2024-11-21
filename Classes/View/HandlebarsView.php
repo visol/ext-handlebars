@@ -2,6 +2,7 @@
 namespace Visol\Handlebars\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use Visol\Handlebars\Rendering\HandlebarsContext;
@@ -40,7 +41,7 @@ class HandlebarsView implements ViewInterface
     /**
      * Render method of the view (entry point)
      */
-    public function render($templateFileName = null): string
+    public function render(?string $templateFileName = null): string
     {
         $settings = $this->variables['settings'];
         $settings = array_replace_recursive($settings, $this->getContextVariables());
@@ -54,11 +55,10 @@ class HandlebarsView implements ViewInterface
 
     protected function getContextVariables(): array
     {
-        $extbase = $this->renderingContext->getRequest()->getAttribute('extbase');
         return [
-            'extensionKey' => strtolower($extbase->getControllerExtensionKey()),
-            'controllerName' => strtolower($extbase->getControllerName()),
-            'actionName' => strtolower($extbase->getControllerActionName()),
+            'extensionKey' => strtolower($this->renderingContext->getExtensionKey()),
+            'controllerName' => strtolower($this->renderingContext->getControllerName()),
+            'actionName' => strtolower($this->renderingContext->getActionName()),
         ];
     }
 
