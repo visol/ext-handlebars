@@ -8,9 +8,9 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 class HandlebarsContext
 {
-    protected ?ServerRequestInterface $request;
+    protected ServerRequestInterface $request;
 
-    public function __construct(?ServerRequestInterface $request)
+    public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
     }
@@ -22,16 +22,28 @@ class HandlebarsContext
     
     public function getExtensionKey(): ?string
     {
+        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+            return null;
+        }
+
         return $this->request->getControllerExtensionKey();
     }
 
     public function getControllerName(): ?string
     {
+        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+            return null;
+        }
+
         return $this->request->getControllerName();
     }
 
     public function getActionName(): ?string
     {
+        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+            return null;
+        }
+
         return $this->request->getControllerActionName();
     }
 
