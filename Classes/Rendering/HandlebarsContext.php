@@ -4,6 +4,8 @@ namespace Visol\Handlebars\Rendering;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 class HandlebarsContext
@@ -22,7 +24,7 @@ class HandlebarsContext
     
     public function getExtensionKey(): ?string
     {
-        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+        if (!$this->request instanceof RequestInterface) {
             return null;
         }
 
@@ -31,7 +33,7 @@ class HandlebarsContext
 
     public function getControllerName(): ?string
     {
-        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+        if (!$this->request instanceof RequestInterface) {
             return null;
         }
 
@@ -40,7 +42,7 @@ class HandlebarsContext
 
     public function getActionName(): ?string
     {
-        if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\RequestInterface) {
+        if (!$this->request instanceof RequestInterface) {
             return null;
         }
 
@@ -50,8 +52,10 @@ class HandlebarsContext
     public function getUriBuilder(): UriBuilder
     {
         // TODO: Implement cache
+        $requestBuilder = GeneralUtility::makeInstance(RequestBuilder::class);
+        $request = $requestBuilder->build($this->request);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
+        $uriBuilder->setRequest($request);
         return $uriBuilder;
     }
 }
