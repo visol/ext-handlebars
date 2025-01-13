@@ -189,7 +189,7 @@ class HandlebarsEngine
     /**
      * Returns the filename and path of the cache file
      */
-    protected function getCompiledCodePathAndFileName(string $templatePathAndFilename): string
+    protected function getCompiledCodePathAndFilename(string $templatePathAndFilename): string
     {
         // Creates the directory if not existing
         if (!is_dir($this->tempPath)) {
@@ -257,7 +257,8 @@ class HandlebarsEngine
      */
     protected function isBackendUserOnline(): bool
     {
-        return $this->getBackendUser() && (int)$this->getBackendUser()->user['uid'] > 0;
+        return $this->getBackendUser() !== null
+            && (int)$this->getBackendUser()->user['uid'] > 0;
     }
 
     /**

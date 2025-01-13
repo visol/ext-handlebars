@@ -34,7 +34,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 abstract class AbstractHandlebarsController extends ActionController
 {
 
-    /** @var $view HandlebarsView */
+    /** @var HandlebarsView */
     protected $view;
 
     /**
