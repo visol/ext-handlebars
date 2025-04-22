@@ -4,7 +4,7 @@
 ##
 plugin.tx_handlebars {
     # Cache path for compiled templates
-    tempPath = typo3temp/Cache/Code/handlebars/
+    tempPath = var/cache/code/handlebars/
 
     # Root path of handlebars partials (has to be overwritten in your plugin)
     templatesRootPath = EXT:myplugin/Resources/Private/Handlebars/Templates/

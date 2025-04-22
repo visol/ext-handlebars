@@ -1,11 +1,12 @@
 <?php
 namespace Visol\Handlebars\View;
 
-use Visol\Handlebars\Rendering\RenderingContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Visol\Handlebars\Engine\HandlebarsEngine;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use Visol\Handlebars\Rendering\HandlebarsContext;
+use Visol\Handlebars\Engine\HandlebarsEngine;
 
 /***************************************************************
  *  Copyright notice
@@ -33,16 +34,14 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
  ***************************************************************/
 class HandlebarsView implements ViewInterface
 {
-    protected RenderingContext $renderingContext;
-    
+    protected HandlebarsContext $renderingContext;
+
     protected array $variables = [];
-    
+
     /**
      * Render method of the view (entry point)
-     *
-     * @return mixed
      */
-    public function render()
+    public function render(?string $templateFileName = null): string
     {
         $settings = $this->variables['settings'];
         $settings = array_replace_recursive($settings, $this->getContextVariables());
@@ -54,12 +53,7 @@ class HandlebarsView implements ViewInterface
         return $handlebarsEngine->compile();
     }
 
-    /**
-     * Returns context variables as array
-     *
-     * @return array
-     */
-    protected function getContextVariables()
+    protected function getContextVariables(): array
     {
         return [
             'extensionKey' => strtolower($this->renderingContext->getExtensionKey()),
@@ -68,19 +62,6 @@ class HandlebarsView implements ViewInterface
         ];
     }
 
-    public function setRenderingContext(RenderingContext $renderingContext)
-    {
-        $this->renderingContext = $renderingContext;
-    }
-    
-    public function setControllerContext(ControllerContext $controllerContext)
-    {
-        $this->setRenderingContext(GeneralUtility::makeInstance(
-            RenderingContext::class,
-            $controllerContext->getRequest()
-        ));
-    }
-    
     /**
      * Add a variable to $this->viewData.
      * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
@@ -89,7 +70,7 @@ class HandlebarsView implements ViewInterface
      * @param mixed $value Value of object
      * @return self an instance of $this, to enable chaining
      */
-    public function assign($key, $value)
+    public function assign(string $key, mixed $value): ViewInterface
     {
         $this->variables[$key] = $value;
         return $this;
@@ -101,7 +82,7 @@ class HandlebarsView implements ViewInterface
      * @param array $values array in the format array(key1 => value1, key2 => value2).
      * @return self an instance of $this, to enable chaining
      */
-    public function assignMultiple(array $values)
+    public function assignMultiple(array $values): ViewInterface
     {
         foreach ($values as $key => $value) {
             $this->assign($key, $value);
@@ -109,8 +90,26 @@ class HandlebarsView implements ViewInterface
         return $this;
     }
 
-    public function initializeView()
+    public function setRenderingContext(HandlebarsContext $renderingContext): void
     {
-        
+        $this->renderingContext = $renderingContext;
+    }
+
+    /**
+     * Credits: JsonView
+     */
+    public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false): string
+    {
+        // No-op: renderSection does not make sense for this view
+        return '';
+    }
+
+    /**
+     * Credits: JsonView
+     */
+    public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false): string
+    {
+        // No-op: renderPartial does not make sense for this view
+        return '';
     }
 }

@@ -42,26 +42,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HandlebarsEngine
 {
+    protected array $settings;
 
-    /**
-     * @var array
-     */
-    protected $settings;
+    protected string $extensionKey;
 
-    /**
-     * @var string
-     */
-    protected $extensionKey;
-
-    /**
-     * @var string
-     */
-    protected $controllerName;
-
-    /**
-     * @var string
-     */
-    protected $actionName;
+    protected string $controllerName;
 
     protected ?string $templatesRootPath;
 
@@ -69,44 +54,28 @@ class HandlebarsEngine
 
     protected ?string $template;
     
-    /**
-     * @var array
-     */
-    protected $dataProviders;
+    protected array $dataProviders;
 
-    /**
-     * @var array
-     */
-    protected $additionalData;
+    protected array $additionalData;
 
-    /**
-     * @var string
-     */
-    protected $tempPath;
+    protected string $tempPath;
 
     /**
      * HandlebarsEngine constructor.
-     *
-     * @param $settings array
      */
-    public function __construct($settings)
+    public function __construct(array $settings)
     {
         $this->settings = $settings;
-        $this->extensionKey = $settings['extensionKey'];
-        $this->controllerName = $settings['controllerName'];
-        $this->actionName = $settings['actionName'];
         $this->templatesRootPath = $settings['templatesRootPath'] ?? null;
         $this->partialsRootPath = $settings['partialsRootPath'] ?? null;
         $this->template = $settings['template'] ?? $settings['templatePath'] ?? null;
         $this->dataProviders = $settings['dataProviders'] ?? [];
         $this->additionalData = $settings['additionalData'] ?? [];
-        $this->tempPath = Environment::getPublicPath() . '/' . $settings['tempPath'];
+        $this->tempPath = Environment::getProjectPath() . '/' . $settings['tempPath'];
     }
 
     /**
      * Runs the compiling process and returns the rendered html
-     *
-     * @return string
      */
     public function compile(): string
     {
@@ -115,10 +84,7 @@ class HandlebarsEngine
         return $renderer($data);
     }
 
-    /**
-     *
-     */
-    public function getData()
+    public function getData(): array
     {
         $data = [];
 
@@ -137,13 +103,11 @@ class HandlebarsEngine
 
     /**
      * Compiles the template, stores the output in a cache-file, and returns its callable content
-     *
-     * @return callable
      */
     public function getRenderer(): callable
     {
         if (!isset($this->template)) {
-            throw new NoTemplateConfiguredException('No template configured for HandlebarsEngine');
+            throw new NoTemplateConfiguredException('No template configured for HandlebarsEngine', 8130705640);
         }
         return $this->getRendererForTemplate($this->template);
     }
@@ -170,9 +134,6 @@ class HandlebarsEngine
         return include($compiledCodePathAndFilename);
     }
 
-    /**
-     * @return array
-     */
     protected function getOptions(): array
     {
         $helpers = $this->getViewHelpers();
@@ -189,9 +150,6 @@ class HandlebarsEngine
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function getDefaultHelpers(): array
     {
         return [
@@ -199,15 +157,13 @@ class HandlebarsEngine
                 return json_encode($context, JSON_HEX_APOS);
             },
             'lookup' => function ($labels, $key) {
-                return isset($labels[$key]) ? $labels[$key] : '';
+                return $labels[$key] ?? '';
             }
         ];
     }
 
     /**
      * Returns the content of the current template file
-     *
-     * @return string
      */
     protected function getTemplateCode($templatePathAndFilename): string
     {
@@ -219,24 +175,21 @@ class HandlebarsEngine
      *
      * @param $cx
      * @param $name
-     * @return string
      */
     protected function getPartialCode($cx, $name): string
     {
         $partialContent = '';
         $partialFileNameAndPath = $this->getPartialPathAndFileName($name);
         if (file_exists($partialFileNameAndPath)) {
-            $partialContent = file_get_contents($partialFileNameAndPath);
+            return file_get_contents($partialFileNameAndPath);
         }
         return $partialContent;
     }
 
     /**
      * Returns the filename and path of the cache file
-     *
-     * @return string
      */
-    protected function getCompiledCodePathAndFileName(string $templatePathAndFilename): string
+    protected function getCompiledCodePathAndFilename(string $templatePathAndFilename): string
     {
         // Creates the directory if not existing
         if (!is_dir($this->tempPath)) {
@@ -251,9 +204,6 @@ class HandlebarsEngine
 
     /**
      * Returns the template filename and path
-     *
-     * @param string $template
-     * @return string
      */
     protected function getTemplatePathAndFilename(string $template): ?string
     {
@@ -269,9 +219,6 @@ class HandlebarsEngine
      * Returns filename and path for a given partial name.
      * 1. Lookup below partialsRootPath
      * 2. Lookup below templatesRootPath
-     *
-     * @param string $name
-     * @return string|null
      */
     protected function getPartialPathAndFileName(string $name): ?string
     {
@@ -307,28 +254,25 @@ class HandlebarsEngine
     
     /**
      * Returns backend user online status
-     * @return bool
      */
     protected function isBackendUserOnline(): bool
     {
-        return $this->getBackendUser() && (int)$this->getBackendUser()->user['uid'] > 0;
+        return $this->getBackendUser() !== null
+            && (int)$this->getBackendUser()->user['uid'] > 0;
     }
 
     /**
      * Returns an instance of the current Backend User.
-     *
-     * @return BackendUserAuthentication|null
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): ?BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getDefaultDataProviders()
+    protected function getDefaultDataProviders(): array
     {
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        $defaultDataProviders = (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
-        return $defaultDataProviders;
+        return (array)$extensionConfiguration->get('handlebars', 'defaultDataProviders');
     }
 
     protected function getViewHelpers(): array
